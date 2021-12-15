@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "transformerinterceptor",
+	"version": "${version}",
+	"name": "TransformerInterceptor",
+	"description": "Library to register raw class transformation and generation listeners",
+	"authors": [
+		"Klotzi111"
+	],
+	"contributors": [],
+	"contact": {
+		"homepage": "https://github.com/Klotzi111/TransformerInterceptor",
+		"issues": "https://github.com/Klotzi111/TransformerInterceptor/issues",
+		"sources": "https://github.com/Klotzi111/TransformerInterceptor"
+	},
+	"license": "Apache-2.0",
+	"icon": "assets/transformerinterceptor/icon.png",
+	"environment": "Client",
+	"entrypoints": {
+		"main": [],
+		"client": [],
+		"server": [],
+		"preLaunch": [
+			"de.klotzi111.transformerinterceptor.impl.InitTransformationEventsEntryPoint"
+		]
+	},
+	"mixins": [
+		"transformerinterceptor.mixins.json"
+	],
+	"custom": {
+		"modmenu:api": true,
+		"modmenu": {
+			"badges": [
+				"library"
+			]
+		}
+	},
+	"depends": {
+    	"java": ">=8"
+	}
+}

@@ -1,0 +1,12 @@
+{
+	"required": true,
+	"package": "de.klotzi111.transformerinterceptor.impl.mixin",
+	"compatibilityLevel": "JAVA_8",
+	"plugin": "de.klotzi111.transformerinterceptor.impl.mixin.TransformerInterceptorMixinConfig",
+	"mixins": [],
+	"client": [],
+	"server": [],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
