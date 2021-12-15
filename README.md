@@ -28,6 +28,7 @@ Classes of:
  - other mods
  - fabric
  - libraries.
+
 BUT NOT classes:
  - who's package starts with `java`
 
