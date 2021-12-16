@@ -3,7 +3,24 @@
 Fabric mod library to register raw class transformation/generation listeners.
 
 ## Usage
-As of now there is no maven repository to download it from.
+You can get it via jitpack or compile it yourself.
+
+### Jitpack
+Add the following in your build.gradle:
+
+```groovy
+repositories {
+	maven {
+		url "https://jitpack.io"
+	}
+}
+
+dependencies {
+    include(modApi("com.github.Klotzi111:TransformerInterceptor:main-SNAPSHOT"))
+}
+```
+
+### Compile self
 Do the following to use this library mod:
  - Download, build and publish this mod to your local maven repository (use the gradle task `publishToMavenLocal` for that)
  - Add the following in your build.gradle:
@@ -14,12 +31,12 @@ repositories {
 }
 
 dependencies {
-    include(modImplementation("de.klotzi111:TransformerInterceptor:1+"))
+    include(modApi("de.klotzi111:TransformerInterceptor:1+"))
 }
 ```
 
 ## Transformation types
-There are two transformation types (register points):
+There are two transformation types (register points): Basic and Raw
 ### Basic (Without Mixin classes)
 `ClassTransformer`s registered on `BasicTransformerInterceptor` will be called for classes that are required from execution.
 For the following kind of classes the transformer will be called:
@@ -43,6 +60,12 @@ Because:
 
 #### Note
 Classes loaded for the `Raw` type are sometimes ONLY loaded for the `MixinTransformer` (SpongepoweredMixin) and the class will be loaded again when it is required from normal execution.
+
+### Priorities
+When registering a `ClassTransformer` you need to give it a priority. This priority specifies the order in which the `ClassTransformer` are executed.
+Higher priorities are executed first. The default action has a priority of `0`.
+If you want to transform after the default load/transformation has happened register your `ClassTransformer` with a priority lower than `0`.
+If you want to transform the result of other registered `ClassTransformer` or initially load the class then use a priority higher than `0`.
 
 ## Example
 Because classes are loaded almost every time during execution you want to register your class transformer as early as possible.
@@ -112,11 +135,11 @@ public class TransformationEntryPoint implements PreMixinLoadEntrypoint {
 		// instantiate the class transformer
 		ExampleClassTransformer transformer = new ExampleClassTransformer();
 		
-		// register the class transformer listener after default actions
+		// register the class transformer listener after default actions: priority < 0
 		// raw for mixin classes themselves
-		PriorityMapHelper.addSafe(RawTransformerInterceptor.CLASS_TRANSFORMERS, /* just some arbitrary priority number */ -1000, transformer);
+		PriorityMapHelper.addSafe(RawTransformerInterceptor.CLASS_TRANSFORMERS, /* just some arbitrary priority number < 0 to be after default action */ -1000, transformer);
 		// basic still required for non mixins to be persistent
-		PriorityMapHelper.addSafe(BasicTransformerInterceptor.CLASS_TRANSFORMERS, /* just some arbitrary priority number */ -1000, transformer);
+		PriorityMapHelper.addSafe(BasicTransformerInterceptor.CLASS_TRANSFORMERS, /* just some arbitrary priority number < 0 to be after default action */ -1000, transformer);
 	}
 
 }

@@ -19,7 +19,6 @@ minecraft {
 
 repositories {
 	mavenLocal()
-	jcenter()
 }
 
 dependencies {
