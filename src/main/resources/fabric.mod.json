@@ -14,8 +14,7 @@
 		"sources": "https://github.com/Klotzi111/TransformerInterceptor"
 	},
 	"license": "Apache-2.0",
-	"icon": "assets/transformerinterceptor/icon.png",
-	"environment": "Client",
+	"environment": "*",
 	"entrypoints": {
 		"main": [],
 		"client": [],
