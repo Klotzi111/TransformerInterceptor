@@ -1,7 +1,6 @@
 package de.klotzi111.transformerinterceptor.impl.event.raw;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,16 +15,14 @@ import net.fabricmc.loader.impl.launch.FabricLauncher;
 
 public class EventGeneratorFabricLauncherProxy extends AbstractFabricLauncherProxy implements ClassTransformer {
 
-	// this is required otherwise we are stuck in an infinite resursive loop to load the own classes or classes used in the process to process the transformers
-	protected final List<String> DISALLOWED_PACKAGE_NAMES = new ArrayList<>(2);
+	// this is required otherwise we are stuck in an infinite recursive loop to load the own classes or classes used in the process to process the transformers
+	protected final List<String> DISALLOWED_PACKAGE_NAMES = Arrays.asList(
+		"de.klotzi111.transformerinterceptor", // this library
+		"it.unimi.dsi.fastutil" // fastutil is used by the event apply methods
+	);
 
 	public EventGeneratorFabricLauncherProxy(FabricLauncher delegate) {
 		super(delegate);
-
-		DISALLOWED_PACKAGE_NAMES.addAll(Arrays.asList(
-			"de.klotzi111.transformerinterceptor", // this library
-			"it.unimi.dsi.fastutil" // fastutil is used by the event apply methods
-		));
 
 		registerDefaultEventHandler();
 	}
@@ -37,6 +34,7 @@ public class EventGeneratorFabricLauncherProxy extends AbstractFabricLauncherPro
 				className = ClassUtil.toClassInternal(className);
 				lastClassTransformerResult.classBytes = super.getClassByteArray(className, lastClassTransformerResult.runTransformers);
 			} catch (IOException e) {
+				// TODO: add proper exception handling/printing
 				e.printStackTrace();
 			}
 		}
@@ -49,7 +47,7 @@ public class EventGeneratorFabricLauncherProxy extends AbstractFabricLauncherPro
 
 	@Override
 	public byte[] getClassByteArray(String name, boolean runTransformers) throws IOException {
-		// because the class names here are with Slashes
+		// because the class names here are with slashes
 		name = ClassUtil.fromClassInternal(name);
 		if (ClassUtil.startsWithPrefix(name, DISALLOWED_PACKAGE_NAMES)) {
 			return super.getClassByteArray(name, runTransformers);
