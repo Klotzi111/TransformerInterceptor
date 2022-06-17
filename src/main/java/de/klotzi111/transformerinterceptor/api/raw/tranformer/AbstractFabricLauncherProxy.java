@@ -3,6 +3,7 @@ package de.klotzi111.transformerinterceptor.api.raw.tranformer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
+import java.util.Collection;
 import java.util.List;
 import java.util.jar.Manifest;
 
@@ -37,6 +38,11 @@ public abstract class AbstractFabricLauncherProxy extends FabricLauncherBase {
 	@Override
 	public void setAllowedPrefixes(Path path, String... prefixes) {
 		delegate.setAllowedPrefixes(path, prefixes);
+	}
+
+	@Override
+	public void setValidParentClassPath(Collection<Path> paths) {
+		delegate.setValidParentClassPath(paths);
 	}
 
 	@Override
